@@ -13,7 +13,7 @@ times = []
 
 for n in sizes:
     arr = [random.randint(0, 10000) for _ in range(n)]
-    target = random.randint(0, 10000)
+    target = arr[random.randint(0, n-1)]  # pick target from array
 
     start = time.time()
     for i in range(1000):

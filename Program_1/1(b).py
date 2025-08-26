@@ -19,11 +19,10 @@ sizes = [10, 50, 100, 500, 1000, 3000, 6000, 7000, 8000, 10000]
 times = []
 
 for n in sizes:
-    arr = sorted([random.randint(0, 10000) for _ in range(n)])  # sorted for binary search
-    target = random.randint(0, 10000)
-
     start = time.time()
     for i in range(1000):
+        arr = sorted([random.randint(0, 10000) for _ in range(n)])  # new array
+        target = arr[random.randint(0, n-1)]  # new key from array
         binary_search(arr, target)
     end = time.time()
 
