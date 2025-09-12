@@ -1,75 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-void multiply(int *A, int *B, int *C, int row1, int col1, int row2, int col2) {
-    if (col1 != row2) {
-        printf("Invalid matrices: columns of A != rows of B\n");
-        return;
-    }
-
-    for (int i = 0; i < row1; i++) {
-        for (int j = 0; j < col2; j++) {
-            C[i * col2 + j] = 0;
-        }
-    }
-
-    for (int i = 0; i < row1; i++) {
-        for (int j = 0; j < col2; j++) {
-            for (int k = 0; k < col1; k++) {
-                C[i * col2 + j] += A[i * col1 + k] * B[k * col2 + j];
+void multiply(int *A, int *B, int *C, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            C[i * n + j] = 0;
+            for (int k = 0; k < n; k++) {
+                C[i * n + j] += A[i * n + k] * B[k * n + j];
             }
         }
     }
 }
 
 int main() {
-    int row1, col1, row2, col2;
+    int power, n;
 
-    printf("Enter rows and columns of Matrix A: ");
-    scanf("%d %d", &row1, &col1);
+    printf("Enter n (matrix size will be 2^n x 2^n): ");
+    scanf("%d", &power);
 
-    printf("Enter rows and columns of Matrix B: ");
-    scanf("%d %d", &row2, &col2);
+    n = 1 << power;  
 
-    if (col1 != row2) {
-        printf("Invalid matrices: columns of A != rows of B\n");
-        return 1;
-    }
-
-    int *A = (int *)malloc(row1 * col1 * sizeof(int));
-    int *B = (int *)malloc(row2 * col2 * sizeof(int));
-    int *C = (int *)malloc(row1 * col2 * sizeof(int));
+    int *A = (int *)malloc(n * n * sizeof(int));
+    int *B = (int *)malloc(n * n * sizeof(int));
+    int *C = (int *)malloc(n * n * sizeof(int));
 
     if (A == NULL || B == NULL || C == NULL) {
         printf("Memory allocation failed\n");
         return 1;
     }
 
-    printf("Enter elements of Matrix A:\n");
-    for (int i = 0; i < row1; i++) {
-        for (int j = 0; j < col1; j++) {
-            scanf("%d", &A[i * col1 + j]);
-        }
+    srand(time(NULL));
+
+    for (int i = 0; i < n * n; i++) {
+        A[i] = rand() % 10;   
+        B[i] = rand() % 10;
     }
 
-    printf("Enter elements of Matrix B:\n");
-    for (int i = 0; i < row2; i++) {
-        for (int j = 0; j < col2; j++) {
-            scanf("%d", &B[i * col2 + j]);
-        }
+    clock_t start = clock();
+
+    for (int i = 0; i < 1000; i++) {
+        multiply(A, B, C, n);
     }
 
-    multiply(A, B, C, row1, col1, row2, col2);
+    clock_t end = clock();
 
-    printf("Result Matrix:\n");
-    for (int i = 0; i < row1; i++) {
-        for (int j = 0; j < col2; j++) {
-            printf("%d ", C[i * col2 + j]);
-        }
-        printf("\n");
-    }
+    double time = ((double)(end - start)) / CLOCKS_PER_SEC / 1000;
 
-    
+    printf("\nFor %d x %d matrix multiplication, time taken = %f seconds\n", n, n, time);
+
     free(A);
     free(B);
     free(C);
