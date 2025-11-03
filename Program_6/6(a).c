@@ -18,7 +18,7 @@ int activity_selection(int activities[][2],int num_activities){
     int j=0;
     int count=1;
     printf("{%d,%d}",activities[0][0],activities[0][1]);
-    for(int i=0;i<num_activities;i++){
+    for(int i=1;i<num_activities;i++){
         if (activities[i][0] >= activities[j][1]){
             count+=1;
             j=i;
