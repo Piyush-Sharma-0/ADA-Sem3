@@ -1,5 +1,5 @@
-start=[1,3,0,5,3,5,6,8,8,2,12]
-finish=[5,5,6,7,9,9,10,11,12,14,16]
+start=[1,2,4,6,5,8]
+finish=[3,5,6,7,8,9]
 main=[]
 for i in range(len(start)):
     main.append([start[i],finish[i]])
@@ -8,7 +8,7 @@ main.sort(key=lambda x: x[1])
 count=1
 j=0
 
-doing=[]
+doing=[list(main[0])]
 
 for i in range(1,len(main)):
     if main[i][0]>main[j][1]:

@@ -1,52 +1,38 @@
-import sys
-
-# ---------- PRIM'S ALGORITHM ----------
-def primMST(V, graph):
-    # graph is an adjacency matrix or adjacency list of edge weights
-
-    # Initialize all keys as infinite and MST set as False
-    key = [sys.maxsize] * V
+def prim(graph,source):
+    V = len(graph)
+    selected = [False] * V
+    key = [99999] * V
     parent = [-1] * V
-    mstSet = [False] * V
 
-    # Start from the first vertex (you can start from any)
-    key[0] = 0
+    key[source] = 0
 
-    for _ in range(V - 1):
-        # Pick the vertex u not in MST with the smallest key
-        min_key = sys.maxsize
+    for i in range(V - 1):
+        min_val = 99999
         u = -1
+
+        # Pick min key vertex not yet selected
         for v in range(V):
-            if not mstSet[v] and key[v] < min_key:
-                min_key = key[v]
+            if not selected[v] and key[v] < min_val:
+                min_val = key[v]
                 u = v
 
-        # Add the picked vertex to MST set
-        mstSet[u] = True
+        selected[u] = True
 
-        # Update key and parent of the adjacent vertices
         for v in range(V):
-            if graph[u][v] != 0 and not mstSet[v] and graph[u][v] < key[v]:
+            if graph[u][v] != 0 and not selected[v] and graph[u][v] < key[v]:
                 key[v] = graph[u][v]
                 parent[v] = u
 
-    # Print the constructed MST
-    print("Edges in the Minimum Spanning Tree:")
-    total_weight = 0
     for i in range(1, V):
-        print(f"{parent[i]} -- {i} == {graph[i][parent[i]]}")
-        total_weight += graph[i][parent[i]]
-    print(f"Total weight of MST: {total_weight}")
+        print(f"{parent[i]} -- {i} (weight = {graph[i][parent[i]]})")
 
-
-# ---------- MAIN ----------
-if __name__ == "__main__":
-    V = int(input("Enter number of vertices: "))
-
-    print("Enter the adjacency matrix (0 for no edge):")
-    graph = []
-    for i in range(V):
-        row = list(map(int, input().split()))
-        graph.append(row)
-
-    primMST(V, graph)
+graph = [
+    [0, 4, 4, 0, 0, 0],
+    [4, 0, 2, 0, 0, 0],
+    [4, 2, 0, 3, 4, 2],
+    [0, 0, 3, 0, 3, 0],
+    [0, 0, 4, 3, 0, 3],
+    [0, 0, 2, 0, 3, 0]
+]
+source = 0
+prim(graph,source)
