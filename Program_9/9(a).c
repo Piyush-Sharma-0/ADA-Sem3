@@ -30,11 +30,8 @@ void dijkstra_array(int graph[6][6], int src) {
         visited[u] = 1;
 
         for (int v = 0; v < 6; v++) {
-            if (!visited[v] && graph[u][v] &&
-                dist[u] + graph[u][v] < dist[v]) 
-            {
+            if (!visited[v] && graph[u][v] && dist[u] + graph[u][v] < dist[v]) 
                 dist[v] = dist[u] + graph[u][v];
-            }
         }
     }
 }
